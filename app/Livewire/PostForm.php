@@ -2,11 +2,15 @@
 
 namespace App\Livewire;
 
+use App\Models\Post;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class PostForm extends Component
 {
+    use WithFileUploads;
+
     #[Validate('required', message: 'Post title is required')]
     #[Validate('min:3', message: 'Post title must be 3 chars long')]
     #[Validate('max:150', message: 'Post title must be 150 chars longs')]
@@ -26,6 +30,27 @@ class PostForm extends Component
     public function savePost()
     {
         $this->validate();
+
+        $imagePath = null;
+
+        if ($this->featuredImage) {
+            $imageName = time() . '.' . $this->featuredImage->extension();
+            $imagePath = $this->featuredImage->storeAs('public/uploads', $imageName);
+        }
+
+        $post = Post::create([
+            'title' => $this->title,
+            'content' => $this->content,
+            'featured_image' => $imagePath,
+        ]);
+
+        if ($post) {
+            session()->flash('success', 'Post has been published successfully!');
+        } else {
+            session()->flash('error', 'Unable to create Post. Please try again.');
+        }
+
+        return $this->redirect('/posts', navigate: true); //navigage: true doesnt refresh the page.
     }
 
     public function render()

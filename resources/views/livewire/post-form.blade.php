@@ -40,6 +40,13 @@
                             <label for="featuredImage">Featured Image<span class="text-danger">*</span></label>
                             <input type="file" wire:model="featuredImage" class="form-control" id="featuredImage">
 
+                            <!-- Preview Image  -->
+                            @if ($featuredImage)
+                            <div>
+                                <img src="{{ $featuredImage->temporaryUrl() }}" alt="preview image" class="img-fluid" width="200px">
+                            </div>
+                            @endif
+
                             @error('featuredImage')
                             <p class="text-danger">{{ $message }}</p>
                             @enderror
