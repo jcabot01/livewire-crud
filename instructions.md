@@ -5,6 +5,8 @@
 5. Design the schema of the post table
 6. Design the UI for creating the post
 7. Display out the post in the listing
+8. Pagination of Posts
+9. Post view functionality
 
 To create a Livewire Component, run:
 `php artisan make:livewire <ComponentName>`

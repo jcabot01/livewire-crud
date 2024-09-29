@@ -26,7 +26,7 @@
 
     <!-- Table Component -->
     <div class="card shadow">
-        <div class="table-responsive">
+        <div class="card-body mt-4 table-responsive">
             <table class="table table-striped">
 
                 <thead>
@@ -42,8 +42,16 @@
                     @foreach ($posts as $post)
                     <tr>
                         <td>{{$loop->iteration}}</td>
-                        <td><img src="{{ Storage::url($post->featured_image) }}" alt="" class="img-fluid" width="200px"></td>
-                        <td>{{$post->title}}</td>
+                        <td>
+                            <a wire:navigate href="{{ route('posts.view', $post->id) }}">
+                                <img src="{{ Storage::url($post->featured_image) }}" alt="" class="img-fluid" width="150px">
+                            </a>
+                        </td>
+                        <td>
+                            <a class="text-decoration-none" wire:navigate href="{{ route('posts.view', $post->id) }}">
+                                {{$post->title}}
+                            </a>
+                        </td>
                         <td>{{$post->content}}</td>
                         <td>
                             <p><small><strong>Posted:</strong> {{ \Carbon\Carbon::parse($post->created_at)->diffForHumans()}}</small></p>
@@ -57,6 +65,7 @@
                     @endforeach
                 </tbody>
             </table>
+            {{ $posts->links() }}
         </div>
     </div>
 </div>

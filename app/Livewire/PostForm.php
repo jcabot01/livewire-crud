@@ -11,6 +11,9 @@ class PostForm extends Component
 {
     use WithFileUploads;
 
+    public $isView = false;
+    public $post = null;
+
     #[Validate('required', message: 'Post title is required')]
     #[Validate('min:3', message: 'Post title must be 3 chars long')]
     #[Validate('max:150', message: 'Post title must be 150 chars longs')]
@@ -26,6 +29,17 @@ class PostForm extends Component
     #[Validate('max:2048', message: 'Featured Image must not be larger than 2MB')]
     public $featuredImage;
 
+
+    public function mount(Post $post)
+    {
+        $this->isView = request()->routeIs('posts.view');
+
+        if ($post->id) {
+            $this->post = $post;
+            $this->title = $post->title;
+            $this->content = $post->content;
+        }
+    }
 
     public function savePost()
     {
